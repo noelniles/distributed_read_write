@@ -6,6 +6,7 @@ class vector_clock:
         return self.clock[n]
 
     def set_clock(self, sender, recvr):
+        pass
 
 
 if __name__ == '__main__':
