@@ -10,6 +10,9 @@ class Client(threading.Thread):
         self.size = 1024
 
     def run(self):
+        """This method actually overrides the threading run method so that we
+           can just call Client.start() and it calls this method.
+        """
         running = 1
         while running:
             data = self.client.recv(self.size)
