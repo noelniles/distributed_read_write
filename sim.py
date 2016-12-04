@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     npc = sys.argv[1]
 
-    pc1 = pc.pc(0, 5)
+    pc1 = pc.pc(0, 5)       # Initialize PC0 with 5 other PCs
     print(pc1.clock)
 
 
