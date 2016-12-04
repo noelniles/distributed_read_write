@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import select, socket, sys, threading
-import Client
+from Client import Client
 
 
 class Server:
@@ -13,11 +13,14 @@ class Server:
         self.threads = []
 
     def open_socket(self):
+        """Tries to open a socket."""
         try:
-            self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.server = socket.socket(socket.AF_INET,
+                    socket.SOCK_STREAM)
+            print("self.server...", self.server)
             self.server.bind((self.host, self.port))
             self.server.listen(5)
-        except (socket.error, (value, message)):
+        except(socket.error, (value, message)):
             if self.server:
                 self.server.close()
             print("Could not open socket: ", message)
@@ -28,13 +31,15 @@ class Server:
         input = [self.server, sys.stdin]
         running = 1
         while running:
-            inputready, outputready, exceptready = select.select(input,[],[])
-
+            inputready, outputready, exceptready = select.select(input, [], [])
             for s in inputready:
+                print(s)
                 if s == self.server:
-                    c = Client(self.server.accept())
+                    client, address = self.server.accept()
+                    c = Client(client, address)
                     c.start()
                     self.threads.append(c)
+                    print(self.threads)
                 elif s == sys.stdin:
                     junk = sys.stdin.readline()
                     running = 0
