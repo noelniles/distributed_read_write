@@ -24,6 +24,7 @@ class Client(threading.Thread):
             data = self.client.recv(self.size)
             if data:
                 # send the data to the socket returns the number of bytes sent
+                print(data)
                 self.client.send(data)
             else:
                 # mark the socket closed
