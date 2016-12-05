@@ -6,9 +6,9 @@ import vector_clock
 class Client(threading.Thread):
     def __init__(self, client, address, vclock):
         """Initialize a new client.
-            
+
             client:     a new socket object
-            address:    the address that bound to the socket on the other end 
+            address:    the address that bound to the socket on the other end
         """
         threading.Thread.__init__(self)
         self.client = client
@@ -29,7 +29,7 @@ class Client(threading.Thread):
             print('vclock: ', self.vclock)
             if data:
                 # send the data to the socket returns the number of bytes sent
-                print(data)
+                print(data[1])
                 self.client.send(data)
             else:
                 # mark the socket closed

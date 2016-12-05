@@ -4,10 +4,11 @@ from Client import Client
 import vector_clock
 
 
+
 class Server:
     def __init__(self):
         self.host = ''
-        self.port = 5005
+        self.port = 5015
         self.backlog = 5
         self.size = 1024
         self.server = None
@@ -64,7 +65,6 @@ class Server:
 
                     # Add the client to the queue.
                     self.threads.append(c)
-
                 elif s == sys.stdin:
                     # Wait until each client thread terminates
                     junk = sys.stdin.readline()
