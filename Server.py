@@ -5,6 +5,10 @@ from Client import Client
 
 
 class Server:
+    """This is really just a delegator that creates new clients. Once this is
+    run you use PC.py to fire up new clients. Then this Server will initialize
+    some stuff and start a new thread for each client that connects.
+    """
     def __init__(self):
         self.host = ''
         self.port = 5015
