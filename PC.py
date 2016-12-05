@@ -2,7 +2,17 @@
 """
 A driver for PC simulation
 
-Right now this just starts one client and reads from stdin.
+Once initialized a PC will create a new socket and try to connect to the
+Server. Once connected the PC will log it's start time. Then the PC will
+call the function behave_randomly() which chooses to either read or write.
+
+TODO: Figure out how to pass this PCs clock to all the other clients. Right now
+when you launch a new PC it will create it's own vector clock and it doens't 
+have a way to compare it's clock with the others.
+
+This was skirted around before by having just one vector clock that was kept
+in the Client class. This may still be a cheating kind of work around if we
+need it, but it's not really an accurate simulation.
 """
 import random, socket, sys, time
 from logger import logger
