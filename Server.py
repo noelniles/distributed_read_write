@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import select, socket, sys, threading
 from Client import Client
+import vector_clock
 
 
 class Server:
@@ -11,6 +12,7 @@ class Server:
         self.size = 1024
         self.server = None
         self.threads = []
+        self.vclock = [0]*10
 
     def open_socket(self):
         """Try to open a socket."""
@@ -33,6 +35,11 @@ class Server:
             print("Could not open socket: ", message)
             sys.exit(1)
 
+    def most_recent_vclock(self):
+        for c in self.vclock:
+            pass
+
+
     def run(self):
         """Open a socket and adds clients to the queue."""
         self.open_socket()
@@ -42,6 +49,7 @@ class Server:
             # Select returns a subset of the lists that are passed to it. The
             # lists that are returned are lists of elements that are ready.
             inputready, outputready, exceptready = select.select(input, [], [])
+
             for s in inputready:
                 if s == self.server:
                     # A readable server socket is ready to receive a connnection.
@@ -49,7 +57,7 @@ class Server:
                     print('---------\n',address,'\n---------\n')
 
                     # Initialize a new client thread.
-                    c = Client(client, address)
+                    c = Client(client, address, self.vclock)
 
                     # Run the thread.
                     c.start()
