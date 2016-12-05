@@ -4,7 +4,7 @@ import datetime, os, sys
 class logger:
     def __init__(self, pc):
         self.now = datetime.datetime.now()
-        self.fn = '{}.log'.format(pc.id)
+        self.fn = '{}.log'.format(pc)
         self.logdir = 'logs'
         self.logpath = os.path.join(self.logdir, self.fn)
 

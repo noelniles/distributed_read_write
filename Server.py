@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import select, socket, sys, threading
 from Client import Client
-import vector_clock
 
 
 
@@ -13,7 +12,7 @@ class Server:
         self.size = 1024
         self.server = None
         self.threads = []
-        self.vclock = [0]*10
+        self.vclock = [0]*10    # Max clients is 10
 
     def open_socket(self):
         """Try to open a socket."""

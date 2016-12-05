@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import select, socket, sys, threading
-import vector_clock
 
 
 class Client(threading.Thread):
@@ -15,6 +14,7 @@ class Client(threading.Thread):
         self.address = address
         self.size = 1024
         self.vclock = vclock
+        self.id = self.client.fileno()
 
     def run(self):
         """This method actually overrides the threading run method so that we
@@ -24,21 +24,21 @@ class Client(threading.Thread):
         while running:
             # a bytes object representing the data received
             data = self.client.recv(self.size)
-            print('fileno: ', self.client.fileno())
-            self.vclock[self.client.fileno()] = self.vclock[self.client.fileno()] + 1
-            print('vclock: ', self.vclock)
+            self.vclock[self.id] = self.vclock[self.client.fileno()] + 1
+
             if data:
-                # send the data to the socket returns the number of bytes sent
-                print(data[1])
+                # send the deta to the socket returns the number of bytes sent
+                self.can_write()
                 self.client.send(data)
             else:
                 # mark the socket closed
                 self.client.close()
                 running = 0
 
-    def update_vclock(vclcock):
-        """Given a vclock update this current vclock."""
-        pass
+    def can_write(self):
+        if self.vclock[self.id] == max(self.vclock):
+            print('OK WRITE')
+
 
 if __name__ == '__main__':
     # This should be imported not run directly.
