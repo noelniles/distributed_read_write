@@ -3,6 +3,7 @@ import select, socket, sys, threading
 from Client import Client
 
 
+MAXCLIENTS = 10
 
 class Server:
     """This is really just a delegator that creates new clients. Once this is
@@ -16,8 +17,8 @@ class Server:
         self.size = 1024
         self.server = None
         self.threads = []
-        self.vclock = [0]*10    # Max clients is 10
-        self.nclients = 0       # Number of clients currently connected
+        self.vclock = [0]*MAXCLIENTS
+        self.nclients = 0
 
     def open_socket(self):
         """Try to open a socket."""
@@ -39,11 +40,6 @@ class Server:
 
             print("Could not open socket: ", message)
             sys.exit(1)
-
-    def most_recent_vclock(self):
-        for c in self.vclock:
-            pass
-
 
     def run(self):
         """Open a socket and adds clients to the queue."""
@@ -76,7 +72,9 @@ class Server:
                     running = 0
 
         self.server.close()
+
         for c in self.threads:
+            print("Left it.")
             c.join()
 
 if __name__ == '__main__':

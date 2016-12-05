@@ -12,15 +12,17 @@ class Client(threading.Thread):
             The Client is initialized with a server because I kept having to 
             add more parameters to the constructor and it was just a pain in 
             the ass. The client server paradigm is kind of tenuous in this
-            app anyway. Enjoy!
+            app anyway.
+
+            This means that the client can use any attributes of the server.
         """
         threading.Thread.__init__(self)
-        self.client = server.client
+        self.client = server.client         # socket object
         self.address = server.address
-        self.size = 1024
-        self.vclock = server.vclock
-        self.id = self.client.fileno()
+        self.size = 1024                    # make read/write size
+        self.id = self.client.fileno()      # It's unique, small, a good index.
         self.nneighbors = server.nclients   # Not a typo. The number of clients
+        self.server = server                # And the kitchen sink...
 
     def run(self):
         """This method actually overrides the threading run method so that we
@@ -28,24 +30,16 @@ class Client(threading.Thread):
         """
         running = 1
         while running:
-            # a bytes object representing the data received
-            data = self.client.recv(self.size)
-            self.vclock[self.id] = self.vclock[self.client.fileno()] + 1
+            data = self.client.recv(self.size) # received bytes object
+            print(data)
 
             if data:
-                # send the data to the socket returns the number of bytes sent
-                self.can_write()
                 self.client.send(data)
             else:
-                # mark the socket closed
                 self.client.close()
                 running = 0
 
-    def can_write(self):
-        if self.vclock[self.id] == max(self.vclock):
-            print('OK WRITE')
-
 
 if __name__ == '__main__':
-    # This should be imported not run directly.
-    pass
+    print("This should be imported not run directly.")
+    sys.exit(2)
