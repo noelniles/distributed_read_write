@@ -20,8 +20,8 @@ while 1:
     line = sys.stdin.readline()
     if line == '\n':
         break
-    s.send(line)
+    s.send(line.encode('utf-8'))
     data = s.recv(size)
-    sys.stdout.write(data)
+    sys.stdout.write(str(data))
     sys.stdout.write('%')
 s.close()

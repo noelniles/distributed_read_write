@@ -23,10 +23,12 @@ class Server:
 
             # Listen for at most self.backlog connections.
             self.server.listen(self.backlog)
+
         except(socket.error, (value, message)):
             # If the socket is open, but an error occured then close it.
             if self.server:
                 self.server.close()
+
             print("Could not open socket: ", message)
             sys.exit(1)
 
@@ -41,11 +43,19 @@ class Server:
             inputready, outputready, exceptready = select.select(input, [], [])
             for s in inputready:
                 if s == self.server:
+                    # A readable server socket is ready to receive a connnection.
                     client, address = self.server.accept()
+
+                    # Initialize a new client thread.
                     c = Client(client, address)
+
+                    # Run the thread.
                     c.start()
+
+                    # Add the client to the queue.
                     self.threads.append(c)
                 elif s == sys.stdin:
+                    # Wait until each client thread terminates
                     junk = sys.stdin.readline()
                     running = 0
 
