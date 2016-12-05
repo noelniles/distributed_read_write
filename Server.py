@@ -6,7 +6,7 @@ from Client import Client
 class Server:
     def __init__(self):
         self.host = ''
-        self.port = 5000
+        self.port = 5005
         self.backlog = 5
         self.size = 1024
         self.server = None
@@ -24,7 +24,8 @@ class Server:
             # Listen for at most self.backlog connections.
             self.server.listen(self.backlog)
 
-        except(socket.error, (value, message)):
+        except OSError as message:
+        # except(socket.error, (value, message)):
             # If the socket is open, but an error occured then close it.
             if self.server:
                 self.server.close()
@@ -45,6 +46,7 @@ class Server:
                 if s == self.server:
                     # A readable server socket is ready to receive a connnection.
                     client, address = self.server.accept()
+                    print('---------\n',address,'\n---------\n')
 
                     # Initialize a new client thread.
                     c = Client(client, address)
@@ -54,6 +56,7 @@ class Server:
 
                     # Add the client to the queue.
                     self.threads.append(c)
+
                 elif s == sys.stdin:
                     # Wait until each client thread terminates
                     junk = sys.stdin.readline()

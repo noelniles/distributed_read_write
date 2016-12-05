@@ -14,4 +14,6 @@ class logger:
         with open(self.logpath, 'a') as f:
             f.write('{} {}\n'.format("started at: ", self.now))
 
-
+    def lwrite(self, m):
+        with open(self.logpath, 'a') as f:
+            f.write(m+'\n')
