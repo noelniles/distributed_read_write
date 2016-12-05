@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import select, socket, sys, threading
-
+from array import array
 
 class Client(threading.Thread):
     def __init__(self, client, address):
         """Initialize a new client.
-            
+
             client:     a new socket object
-            address:    the address that bound to the socket on the other end 
+            address:    the address that bound to the socket on the other end
         """
         threading.Thread.__init__(self)
         self.client = client
@@ -19,12 +19,14 @@ class Client(threading.Thread):
            can just call Client.start() and it calls this method.
         """
         running = 1
+        vc = []
         while running:
             # a bytes object representing the data received
-            data = self.client.recv(self.size)
+            data = array('i',[int(self.client.recv(self.size))])
+            print(data)
             if data:
                 # send the data to the socket returns the number of bytes sent
-                print(data)
+                print(data[1])
                 self.client.send(data)
             else:
                 # mark the socket closed
