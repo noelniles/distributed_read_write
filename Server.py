@@ -13,6 +13,7 @@ class Server:
         self.server = None
         self.threads = []
         self.vclock = [0]*10    # Max clients is 10
+        self.nclients = 0       # Number of clients currently connected
 
     def open_socket(self):
         """Try to open a socket."""
@@ -53,11 +54,12 @@ class Server:
             for s in inputready:
                 if s == self.server:
                     # A readable server socket is ready to receive a connnection.
-                    client, address = self.server.accept()
-                    print('---------\n',address,'\n---------\n')
+                    self.client, self.address = self.server.accept()
+                    print('---------\n',self.address,'\n---------\n')
 
                     # Initialize a new client thread.
-                    c = Client(client, address, self.vclock)
+                    # I'm just passing the whole object here cux WTF.
+                    c = Client(self)
 
                     # Run the thread.
                     c.start()

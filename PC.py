@@ -26,6 +26,7 @@ class PC:
             if line == '\n':
                 break
             self.sock.send(line.encode('utf-8'))
+            print(self.sock.recv(self.size))
         self.sock.close()
 
 
